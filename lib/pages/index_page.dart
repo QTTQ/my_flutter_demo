@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import './home_page.dart';
-import './community_page.dart';
-import './news_page.dart';
-import './personal_center.dart';
+import 'package:flutter/widgets.dart';
+
+import './home.dart';
 
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import 'package:provide/provide.dart';
+import '../provide/comm.dart';
+import '../utils/event_bus.dart';
 
 class IndexPage extends StatefulWidget {
   final Widget child;
@@ -20,11 +22,6 @@ class _IndexPageState extends State<IndexPage> {
   int _currentIndex = 0;
   Widget currentPage;
 
-  // List<BottomNavigationBarItem> bottomTabs = [
-  //   _buildNavBarItem(
-  //       icon: _currentIndex == 0 ? 'images/home_ico.png' : 'images/home.png',
-  //       text: "首页")
-  // ];
   List<BottomNavigationBarItem> bottomTabs = [
     BottomNavigationBarItem(
         backgroundColor: Colors.red,
@@ -76,24 +73,11 @@ class _IndexPageState extends State<IndexPage> {
         ),
         title: Text('个人中心'))
   ];
-  // BottomNavigationBarItem _buildNavBarItem({String icon, String text}) {
-  //   return BottomNavigationBarItem(
-  //     icon: new Image.asset(
-  //       icon,
-  //       width: ScreenUtil().setWidth(750),
-  //       height: 35.0,
-  //     ),
-  //     title: Text(
-  //       text,
-  //     ),
-  //   );
-  // }
-
   final List<Widget> tabBodies = [
     HomePage(),
-    CommunityPage(),
-    NewsPage(),
-    PersonalCenter()
+    // CommunityPage(),
+    // NewsPage(),
+    // PersonalCenter()
   ];
 
   @override
@@ -102,36 +86,65 @@ class _IndexPageState extends State<IndexPage> {
     super.initState();
   }
 
-
-
   @override
   Widget build(BuildContext context) {
     ScreenUtil.instance = ScreenUtil(width: 750, height: 1920)..init(context);
+    // eventBus.on<UserLoggedInEvent>().listen((event) {
+    //   print(event.text);
+    // });
     return Scaffold(
       // backgroundColor: Color.fromRGBO(244, 245, 245, 1.0),
-      bottomNavigationBar: PreferredSize(
-        preferredSize: Size.fromHeight(ScreenUtil().setHeight(50)),
-        child: BottomNavigationBar(
-          backgroundColor: Colors.white,
-          iconSize: 18.0, //并不好使用
-          elevation: 8.0,
-          type: BottomNavigationBarType.fixed,
-          currentIndex: _currentIndex,
-          // items: bottomTabs,
-          items: bottomTabs,
-          unselectedItemColor: Colors.black,
-          selectedFontSize: 15.0,
-          unselectedFontSize: 15.0,
-          fixedColor: Colors.black,
-          onTap: (index) {
-            setState(() {
-              _currentIndex = index;
-              currentPage = tabBodies[_currentIndex];
-            });
-          },
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      floatingActionButton: Container(
+        padding: EdgeInsets.all(8),
+        margin: EdgeInsets.only(top: 10),
+        child: FloatingActionButton(
+            child: Icon(
+              Icons.add,
+              color: Colors.black,
+              size: 40,
+            ),
+            onPressed: () {
+              print('FloatingActionButton');
+            },
+            backgroundColor: Colors.yellow),
+      ),
+      bottomNavigationBar: BottomAppBar(
+        color: Colors.white,
+        shape: CircularNotchedRectangle(), // 底部导航栏打一个圆形的洞
+        child: Row(
+          children: [
+            IconButton(icon: Icon(Icons.home), onPressed: () {}),
+            SizedBox(), //中间位置空出
+            IconButton(icon: Icon(Icons.home), onPressed: () {}),
+          ],
+          mainAxisAlignment: MainAxisAlignment.spaceAround, //均分底部导航栏横向空间
         ),
       ),
-
+      // bottomNavigationBar: PreferredSize(
+      //   preferredSize: Size.fromHeight(ScreenUtil().setHeight(50)),
+      //   child: BottomNavigationBar(
+      //     backgroundColor: Colors.white,
+      //     iconSize: 18.0, //并不好使用
+      //     elevation: 8.0,
+      //     type: BottomNavigationBarType.fixed,
+      //     currentIndex: _currentIndex,
+      //     // items: bottomTabs,
+      //     items: bottomTabs,
+      //     unselectedItemColor: Colors.black,
+      //     selectedFontSize: 15.0,
+      //     unselectedFontSize: 15.0,
+      //     fixedColor: Colors.black,
+      //     onTap: (index) {
+      //       setState(() {
+      //         _currentIndex = index;
+      //         currentPage = tabBodies[_currentIndex];
+      //         // eventBus.fire(UserLoggedInEvent('Mickey'));
+      //         Provide.value<CommStore>(context).increment();
+      //       });
+      //     },
+      //   ),
+      // ),
       body: IndexedStack(
         index: _currentIndex,
         children: tabBodies,

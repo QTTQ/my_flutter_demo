@@ -1,18 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import './pages/index_page.dart';
 import 'package:provide/provide.dart';
-import './provide/store_comm.dart';
+import './provide/comm.dart';
 import './pages/splash_screen.dart';
-void main(){
-var  commStore=CommStore();
-var providers  =Providers();
 
-providers..provide(Provider<CommStore>.value(commStore));
-
-runApp(ProviderNode(child: MyApp(),providers: providers,));
-}
+void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -20,8 +15,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home:SplashScreen(),
+      home: SplashScreen(),
     );
   }
 }
-

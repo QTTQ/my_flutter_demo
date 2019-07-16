@@ -1,5 +1,8 @@
-const serviceUrl= 'http://test.baixingliangfan.cn/baixing/wxmini/';
+// production
+const serviceUrl= 'http://new.dianjinghou.com';
+// development
+// const serviceUrl= 'http://new.dianjinghou.com/';
+
 const servicePath={
-  "homePageContent":serviceUrl+'homePageContent',//商店首页信息
-  "homePageBelowConten":serviceUrl+'homePageBelowConten',//商城
+  "goods_goods_url":serviceUrl+'/api/goods/goods/',//商品信息
 };
